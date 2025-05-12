@@ -1,0 +1,45 @@
+@media (min-width: 576px) {
+  .illustration {
+    width: 0%;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    max-width: 75%;
+    font-size: 2.25rem;
+  }
+  
+  .hero-description {
+    max-width: 80%;
+    font-size: 1.25rem;
+  }
+  
+  .illustration {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .nav-link {
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-description {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+}
+
+@media (min-width: 1400px) {
+  .illustration {
+    width: 85%;
+  }
+}
