@@ -1,0 +1,2 @@
+# BBRI Stock Price Prediction
+This project aims to predict the stock price of BBRI (Bank Rakyat Indonesia) using various machine learning models. The dataset used for this project is sourced from Yahoo Finance and contains historical stock prices.
