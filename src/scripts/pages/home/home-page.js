@@ -88,6 +88,8 @@ export default class HomePage {
   }
 
   async afterRender() {
+    document.title = 'BBRI Stock Price Prediction';
+    
     const predictButton = document.querySelector('.btn-predict');
     predictButton.addEventListener('click', () => {
       window.location.href = '#/predict';

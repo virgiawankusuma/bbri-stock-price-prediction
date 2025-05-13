@@ -26,6 +26,15 @@ export default class App {
   async renderPage() {
     const url = getActiveRoute();
     const route = routes[url];
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        navbar.classList.add('shadow-sm');
+      } else {
+        navbar.classList.remove('shadow-sm');
+      }
+    });
 
     // Get page instance
     const page = route();

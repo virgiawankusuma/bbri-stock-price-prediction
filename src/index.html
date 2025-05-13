@@ -5,7 +5,13 @@
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Prediksi Harga Saham BBRI</title>
+  <title>BBRI Stock Price Prediction</title>
+  <meta name="description" content="Aplikasi untuk memprediksi harga saham BBRI menggunakan Algoritma Least Squares" />
+  <meta name="keywords" content="BBRI, saham, prediksi, machine learning, least squares" />
+  <meta name="author" content="Achmad Eriel Pangestu" />
+  <meta name="theme-color" content="#0069d9" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
 
   <link rel="shortcut icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
@@ -26,51 +32,49 @@
 <body>
   <header>
     <button id="skip-link" class="skip-link">Menuju konten utama</button>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          <svg width="140" height="40" viewBox="10 15 285 55" xmlns="http://www.w3.org/2000/svg" class="me-2">
-            <!-- Background Shapes -->
-            <rect x="10" y="15" width="70" height="70" rx="10" fill="#0069d9" />
-            <rect x="20" y="25" width="50" height="50" rx="8" fill="white" opacity="0.15" />
-
-            <!-- Stock Chart Line -->
-            <polyline points="20,65 35,50 45,58 55,40 65,48 80,30" stroke="white" stroke-width="4" fill="none"
-              stroke-linecap="round" stroke-linejoin="round" />
-
-            <!-- Text Elements -->
-            <text x="100" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold"
-              fill="#0069d9">BBRI</text>
-            <text x="100" y="75" font-family="Arial, sans-serif" font-size="18" fill="#444">Predict</text>
-
-            <!-- Decorative Elements -->
-            <circle cx="182" cy="50" r="4" fill="#0069d9" />
-            <path d="M200,45 L210,45 L205,55 Z" fill="#0069d9" />
-
-            <!-- Squares representing data points -->
-            <rect x="225" y="38" width="8" height="8" fill="#0069d9" transform="rotate(45, 229, 42)" />
-            <rect x="245" y="48" width="8" height="8" fill="#0069d9" transform="rotate(45, 249, 52)" />
-            <rect x="265" y="33" width="8" height="8" fill="#0069d9" transform="rotate(45, 269, 37)" />
-            <rect x="285" y="53" width="8" height="8" fill="#0069d9" transform="rotate(45, 289, 57)" />
-
-            <!-- Connecting dashed line -->
-            <line x1="229" y1="42" x2="249" y2="52" stroke="#0069d9" stroke-width="1.5" stroke-dasharray="3,2" />
-            <line x1="249" y1="52" x2="269" y2="37" stroke="#0069d9" stroke-width="1.5" stroke-dasharray="3,2" />
-            <line x1="269" y1="37" x2="289" y2="57" stroke="#0069d9" stroke-width="1.5" stroke-dasharray="3,2" />
-          </svg>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto" id="navlist"></ul>
-        </div>
-      </div>
-    </nav>
   </header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="">
+        <svg width="140" height="40" viewBox="10 15 285 55" xmlns="http://www.w3.org/2000/svg" class="me-2">
+          <!-- Background Shapes -->
+          <rect x="10" y="15" width="70" height="70" rx="10" fill="#0069d9" />
+          <rect x="20" y="25" width="50" height="50" rx="8" fill="white" opacity="0.15" />
 
+          <!-- Stock Chart Line -->
+          <polyline points="20,65 35,50 45,58 55,40 65,48 80,30" stroke="white" stroke-width="4" fill="none"
+            stroke-linecap="round" stroke-linejoin="round" />
+
+          <!-- Text Elements -->
+          <text x="100" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold"
+            fill="#0069d9">BBRI</text>
+          <text x="100" y="75" font-family="Arial, sans-serif" font-size="18" fill="#444">Predict</text>
+
+          <!-- Decorative Elements -->
+          <circle cx="182" cy="50" r="4" fill="#0069d9" />
+          <path d="M200,45 L210,45 L205,55 Z" fill="#0069d9" />
+
+          <!-- Squares representing data points -->
+          <rect x="225" y="38" width="8" height="8" fill="#0069d9" transform="rotate(45, 229, 42)" />
+          <rect x="245" y="48" width="8" height="8" fill="#0069d9" transform="rotate(45, 249, 52)" />
+          <rect x="265" y="33" width="8" height="8" fill="#0069d9" transform="rotate(45, 269, 37)" />
+          <rect x="285" y="53" width="8" height="8" fill="#0069d9" transform="rotate(45, 289, 57)" />
+
+          <!-- Connecting dashed line -->
+          <line x1="229" y1="42" x2="249" y2="52" stroke="#0069d9" stroke-width="1.5" stroke-dasharray="3,2" />
+          <line x1="249" y1="52" x2="269" y2="37" stroke="#0069d9" stroke-width="1.5" stroke-dasharray="3,2" />
+          <line x1="269" y1="37" x2="289" y2="57" stroke="#0069d9" stroke-width="1.5" stroke-dasharray="3,2" />
+        </svg>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" id="navlist"></ul>
+      </div>
+    </div>
+  </nav>
   <main tabIndex="-1" id="main-content" class="main-content"></main>
 
   <!-- Footer -->

@@ -123,6 +123,6 @@ export default class AboutPage {
   }
 
   async afterRender() {
-    // Kosong, atau bisa diisi event listener, dll.
+    document.title = 'Tentang - BBRI Stock Price Prediction';
   }
 }

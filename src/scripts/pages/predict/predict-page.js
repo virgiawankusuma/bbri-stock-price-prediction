@@ -24,15 +24,6 @@ export default class PredictPage {
   }
 
   async afterRender() {
-    // Kosong, atau bisa diisi event listener, dll.
-  }
-
-  showLoading() {
-    document.getElementById('reports-list-loading-container').innerHTML =
-      generateLoaderAbsoluteTemplate();
-  }
-
-  hideLoading() {
-    document.getElementById('reports-list-loading-container').innerHTML = '';
+    document.title = 'Prediksi Harga - BBRI Stock Price Prediction';
   }
 }
