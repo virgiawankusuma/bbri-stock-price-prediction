@@ -1,7 +1,6 @@
 // CSS imports
 import '../styles/main.css';
 import '../styles/responsives.css';
-import 'tiny-slider/dist/tiny-slider.css';
 
 // Components
 import App from './pages/app';
