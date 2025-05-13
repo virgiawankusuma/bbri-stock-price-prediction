@@ -1,29 +1,25 @@
-import {
-  generateLoaderAbsoluteTemplate
-} from '../../templates';
+import PredictForm from './predict-form.js';
 
 export default class PredictPage {
+  constructor() {
+    this.predictForm = new PredictForm();
+  }
 
   async render() {
     return `
-      <section>
-        <div>
-          <h1 class="section-title">Predict</h1>
+      <section class="container mt-4 mb-5">
+        <div class="header-section">
+          <h1>Masukkan Data Saham untuk Analisis Prediksi</h1>
+          <p>Gunakan data terbaru untuk memperoleh wawasan tentang<br>pergerakan harga saham</p>
         </div>
       </section>
-
-      <section class="container">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec a diam lectus. Sed sit amet ipsum mauris.
-          Maecenas congue ligula ac quam viverra nec
-          faucibus justo commodo. Aliquam erat volutpat.
-        </p>
-      </section>
+      <div id="predict-form-container"></div>
     `;
   }
 
   async afterRender() {
     document.title = 'Prediksi Harga - BBRI Stock Price Prediction';
+
+    this.predictForm.mount('predict-form-container');
   }
 }

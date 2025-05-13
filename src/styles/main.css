@@ -33,6 +33,16 @@ body {
   transform: translateY(0%);
 }
 
+#predict-detail-button, 
+#predict-hide-detail-button,
+#predict-chart-container,
+#predict-table-container,
+#predict-summary-container,
+#predict-evaluation-container
+{
+  transition: all 0.3s ease;
+}
+
 /* Navigation */
 .navbar {
   background-color: white !important;
