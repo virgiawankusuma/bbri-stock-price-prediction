@@ -76,7 +76,7 @@ export default class HomePage {
           <div class="col-md-6 mb-4">
             <div class="info-section">
               <h4>📊 Sumber Data Saham</h4>
-              <p>Data historis harga saham diperoleh dari Investor Relations: Interactive Charts PT. Bank Rakyat Indonesia<a class="btn m-0 p-0" href="https://www.bri.co.id/id/investor-relations/interactive-charts" target="_blank">↗️</a></p>
+              <p>Data historis harga saham diperoleh dari Investor Relations: Interactive Charts PT. Bank Rakyat Indonesia<a class="btn m-0 p-0" href="https://www.ir-bri.com/stock_chart_interactive.html" target="_blank">↗️</a></p>
               
               <h5 class="mt-4">⚙️ Metode Pengolahan</h5>
               <p>Data dikumpulkan, diolah, dan digunakan dalam model prediksi berbasis Least Square</p>
