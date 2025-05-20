@@ -75,13 +75,29 @@ export default class PredictForm {
   init() {
     document.title = 'Prediksi Harga - BBRI Stock Price Prediction';
     // Inisialisasi event listeners
+    const predictForm = document.getElementById('predict-form');
+    const inputFields = predictForm.querySelectorAll('input');
     const predictButton = document.getElementById('predict-button');
     const uploadButton = document.getElementById('upload-button');
 
     predictButton.addEventListener('click', (event) => {
       event.preventDefault(); // Mencegah pengiriman form default
-      this.predictResult.mount('predict-result-container');
-      console.log('Predict button clicked');
+      // this.predictResult.mount('predict-result-container');
+      // catch data from form
+      const formData = {
+        tanggal: inputFields[0].value,
+        open: inputFields[1].value,
+        high: inputFields[2].value,
+        low: inputFields[3].value,
+        volume: inputFields[4].value,
+        average: inputFields[5].value
+      };
+
+      // Validasi data
+      this.validateForm(formData);
+
+      console.log('Form Data:', formData);
+      
       // Implementasi logika untuk mengirim data
     });
 
@@ -89,6 +105,66 @@ export default class PredictForm {
       console.log('Upload button clicked');
       // Implementasi logika untuk mengupload file CSV
     });
+  }
+
+  validateForm(formData) {
+  // Validasi data kosong
+    for (const field in formData) {
+      if (!formData[field]) {
+        alert(`Field ${field} tidak boleh kosong`);
+        return;
+      }
+    }
+
+    // Validasi numerik
+    const numericFields = ['open', 'high', 'low', 'volume', 'average'];
+    for (const field of numericFields) {
+      if (isNaN(formData[field])) {
+        alert(`Field ${field} harus berupa angka`);
+        return;
+      }
+    }
+    
+    // Validasi tanggal
+    const dateField = formData.tanggal;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(dateField)) {
+      alert('Format tanggal tidak valid. Gunakan format YYYY-MM-DD.');
+      return;
+    }
+
+    // Validasi tanggal tidak lebih dari hari ini
+    const today = new Date();
+    const inputDate = new Date(dateField);
+    if (inputDate > today) {
+      alert('Tanggal tidak boleh lebih dari hari ini.');
+      return;
+    }
+
+    // Validasi tanggal tidak lebih dari 30 hari yang lalu
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+    if (inputDate < thirtyDaysAgo) {
+      alert('Tanggal tidak boleh lebih dari 30 hari yang lalu.');
+      return;
+    }
+
+    // Validasi harga tidak boleh negatif
+    const negativeFields = ['open', 'high', 'low', 'average'];
+    for (const field of negativeFields) {
+      if (parseFloat(formData[field]) < 0) {
+        alert(`Field ${field} tidak boleh negatif`);
+        return;
+      }
+    }
+
+    // Validasi volume tidak boleh nol
+    if (parseFloat(formData.volume) <= 0) {
+      alert('Field volume tidak boleh nol atau negatif');
+      return;
+    }
+    // Jika semua validasi berhasil, lanjutkan dengan pengiriman data
+    console.log('Semua validasi berhasil. Data siap untuk dikirim.');
   }
 
   // Method untuk merender komponen ke container
