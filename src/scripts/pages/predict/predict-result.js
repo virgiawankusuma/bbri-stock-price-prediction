@@ -9,9 +9,27 @@ export default class PredictResult {
     this.predictTable = new PredictTable();
     this.predictSummary = new PredictSummary();
     this.predictEvaluation = new PredictEvaluation();
+
+    this.result = null; // untuk nyimpan data hasil prediksi
   }
 
   render() {
+    
+    const predictionValue = (Math.floor(this.result?.predictedPrice.value * 100) / 100).toFixed(2) ?? '-';
+    const predictionDirection = this.result?.predictedPrice.direction;
+    const predictionDirectionIcon = predictionDirection === 'up' ? 'fa-caret-up text-success' : 'fa-caret-down text-danger';
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const predictionDate = tomorrow
+      ? `(${new Intl.DateTimeFormat("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(new Date(tomorrow))})`
+      : "(Tanggal tidak tersedia)";
+    const predictionChange = this.result?.predictedPrice.percentageChange ?? '';
+
     return `
       <section class="container my-5">
         <div class="card pt-4 shadow-sm">
@@ -21,11 +39,14 @@ export default class PredictResult {
 
             <div class="text-center mb-3">
               <div class="prediction-value">
-                Rp. 1.512 <i class="fa-solid fa-caret-up text-success"></i>
+                Rp. ${predictionValue} <i class="fa-solid ${predictionDirectionIcon}"></i>
               </div>
-              <p class="text-muted">(9 Mei 2025)</p>
-              <div class="text-success mb-3">+3.2% dalam 7 hari ke depan</div>
-              
+              <p class="text-muted">
+                ${predictionDate}
+              </p>
+              <div class="text-success mb-3">
+                ${predictionDirection === 'up' ? '+' : '-'} ${predictionChange}% dari harga penutupan sebelumnya
+              </div>
               <div class="d-flex justify-content-center gap-2 mt-3">
                 <button class="btn btn-primary" id="predict-detail-button">Lihat Detail <i class="fa-solid fa-plus"></i></button>
                 <button class="btn btn-primary visually-hidden" id="predict-hide-detail-button">Sembunyikan Detail <i class="fa-solid fa-minus"></i></button>
@@ -51,10 +72,10 @@ export default class PredictResult {
 
     if (detailBtn) {
       detailBtn.addEventListener('click', () => {
-        this.predictChart.mount('predict-chart-container');
-        this.predictTable.mount('predict-table-container');
-        this.predictSummary.mount('predict-summary-container');
-        this.predictEvaluation.mount('predict-evaluation-container');
+        this.predictChart.mount('predict-chart-container', this.result);
+        this.predictTable.mount('predict-table-container', this.result);
+        this.predictSummary.mount('predict-summary-container', this.result);
+        this.predictEvaluation.mount('predict-evaluation-container', this.result);
         console.log('Detail button clicked');
 
         detailBtn.classList.add('visually-hidden');
@@ -91,7 +112,7 @@ export default class PredictResult {
   }
 
   // Method untuk merender komponen ke container
-  mount(container) {
+  mount(container, result) {
     if (typeof container === 'string') {
       container = document.getElementById(container);
     }
@@ -101,6 +122,7 @@ export default class PredictResult {
       return;
     }
     
+    this.result = result; // Simpan hasil prediksi ke dalam instance
     container.innerHTML = this.render();
     this.init();
     this.element = container;

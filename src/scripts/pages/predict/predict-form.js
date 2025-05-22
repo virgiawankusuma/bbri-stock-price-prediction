@@ -84,7 +84,7 @@ export default class PredictForm {
     const predictButton = document.getElementById('predict-button');
     const uploadButton = document.getElementById('upload-button');
 
-    predictButton.addEventListener('click', (event) => {
+    predictButton.addEventListener('click', async (event) => {
       event.preventDefault();
 
       // this.predictResult.mount('predict-result-container');
@@ -101,8 +101,15 @@ export default class PredictForm {
       this.validateForm(formData);
 
       if (this.validateForm(formData)) {
-        this.predict(formData);
-        // console.log('Form data is valid:', formData);
+        try {
+          const result = await this.predict(formData);
+          // console.log('Predicted Result:', result);
+          
+          // Misal kamu mau render hasilnya:
+          this.predictResult.mount('predict-result-container', result);
+        } catch (error) {
+          console.error('Gagal melakukan prediksi:', error);
+        }
       }
 
       // Reset form setelah pengiriman
