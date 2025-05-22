@@ -81,22 +81,22 @@ export function predict(formData) {
     const date_MA30 = `${processedData[processedData.length - 30]?.Date} ➝ ${lastRow.Date}`;
 
     // Bentuk historical data dengan tanggal
-    const historicalData = [
-      { name: "Dataset_Range", value: processed.dateRange},
-      { name: "Date", value: lastRow.Date, date: date_Current },
-      { name: "Open", value: lastRow.Open, date: date_Current },
-      { name: "High", value: lastRow.High, date: date_Current },
-      { name: "Low", value: lastRow.Low, date: date_Current },
-      { name: "Close", value: lastRow.Close, date: date_Current },
-      { name: "Volume", value: lastRow.Volume, date: date_Current },
-      { name: "Adjusted_Close", value: lastRow.AdjustedClose, date: date_Current },
-      { name: "Close_Lag_1", value: lastRow.Close_Lag_1, date: date_Close_Lag_1 },
-      { name: "Close_Lag_2", value: lastRow.Close_Lag_2, date: date_Close_Lag_2 },
-      { name: "Close_Lag_3", value: lastRow.Close_Lag_3, date: date_Close_Lag_3 },
-      { name: "Daily_Return", value: lastRow.Daily_Return, date: date_Daily_Return },
-      { name: "MA_7", value: lastRow.MA_7, date: date_MA7 },
-      { name: "MA_30", value: lastRow.MA_30, date: date_MA30 },
-    ];
+    const historicalData = {
+      Dataset_Range: { value: processed.dateRange },
+      Date: { value: lastRow.Date, date: date_Current },
+      Open: { value: lastRow.Open, date: date_Current },
+      High: { value: lastRow.High, date: date_Current },
+      Low: { value: lastRow.Low, date: date_Current },
+      Close: { value: lastRow.Close, date: date_Current },
+      Volume: { value: lastRow.Volume, date: date_Current },
+      Adjusted_Close: { value: lastRow.AdjustedClose, date: date_Current },
+      Close_Lag_1: { value: lastRow.Close_Lag_1, date: date_Close_Lag_1 },
+      Close_Lag_2: { value: lastRow.Close_Lag_2, date: date_Close_Lag_2 },
+      Close_Lag_3: { value: lastRow.Close_Lag_3, date: date_Close_Lag_3 },
+      Daily_Return: { value: lastRow.Daily_Return, date: date_Daily_Return },
+      MA_7: { value: lastRow.MA_7, date: date_MA7 },
+      MA_30: { value: lastRow.MA_30, date: date_MA30 }
+    };
 
     // console.log("Historical Data:", historicalData);
     return historicalData;
@@ -132,18 +132,15 @@ export function predict(formData) {
     const historicalData = await fetchBBRIData();
     // return predictedPrice;
     return {
-      result:  {
-        predictedPrice: predictedPrice * 0.9,
-        historicalData: historicalData
-      }
+      predictedPrice: {
+        value: predictedPrice * 0.9,
+        direction: predictedPrice > formData.adjusted_close ? 'up' : 'down',
+        change: Math.abs(predictedPrice - formData.adjusted_close).toFixed(2),
+        percentageChange: ((((predictedPrice * 0.9) - formData.adjusted_close) / formData.adjusted_close) * 100).toFixed(2)
+      },
+      historicalData: historicalData
     };
   }
 
-  runPrediction()
-    .then((result) => {
-      console.log('Predicted Price:', result);
-    })
-    .catch((error) => {
-      console.error('Error during prediction:', error);
-    });
+  return runPrediction()
 }
