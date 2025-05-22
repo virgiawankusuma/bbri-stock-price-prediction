@@ -85,7 +85,14 @@ export function historicalBBRIStockData(data) {
     // console.log("Data BBRI selesai diproses:");
     // console.log(df.slice(-5));
 
-    return df;
+    // return df;
+    return {
+      dateRange: {
+        start: df[0]?.Date ?? null,
+        end: df[df.length - 1]?.Date ?? null,
+      },
+      data: df,
+    };
 
   } catch (err) {
     console.error("Gagal memproses data:", err.message);

@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
+import { historicalBBRIStockData } from './get_historical_data';
 
 export function validateForm(formData) {
   // Validasi data kosong
@@ -61,6 +62,46 @@ export function validateForm(formData) {
 }
 
 export function predict(formData) {
+  async function fetchBBRIData() {
+    const jsonData = JSON.parse(localStorage.getItem('fetchData'));
+    
+    const processed = historicalBBRIStockData(jsonData);
+    const processedData = processed.data;
+
+    // Baris terakhir
+    const lastRow = processedData[processedData.length - 1];
+
+    // Ambil tanggal-tanggal penting
+    const date_Close_Lag_1 = processedData[processedData.length - 2]?.Date ?? null;
+    const date_Close_Lag_2 = processedData[processedData.length - 3]?.Date ?? null;
+    const date_Close_Lag_3 = processedData[processedData.length - 4]?.Date ?? null;
+    const date_Current = lastRow.Date;
+    const date_Daily_Return = `${processedData[processedData.length - 2]?.Date} ➝ ${lastRow.Date}`;
+    const date_MA7 = `${processedData[processedData.length - 7]?.Date} ➝ ${lastRow.Date}`;
+    const date_MA30 = `${processedData[processedData.length - 30]?.Date} ➝ ${lastRow.Date}`;
+
+    // Bentuk historical data dengan tanggal
+    const historicalData = [
+      { name: "Dataset_Range", value: processed.dateRange},
+      { name: "Date", value: lastRow.Date, date: date_Current },
+      { name: "Open", value: lastRow.Open, date: date_Current },
+      { name: "High", value: lastRow.High, date: date_Current },
+      { name: "Low", value: lastRow.Low, date: date_Current },
+      { name: "Close", value: lastRow.Close, date: date_Current },
+      { name: "Volume", value: lastRow.Volume, date: date_Current },
+      { name: "Adjusted_Close", value: lastRow.AdjustedClose, date: date_Current },
+      { name: "Close_Lag_1", value: lastRow.Close_Lag_1, date: date_Close_Lag_1 },
+      { name: "Close_Lag_2", value: lastRow.Close_Lag_2, date: date_Close_Lag_2 },
+      { name: "Close_Lag_3", value: lastRow.Close_Lag_3, date: date_Close_Lag_3 },
+      { name: "Daily_Return", value: lastRow.Daily_Return, date: date_Daily_Return },
+      { name: "MA_7", value: lastRow.MA_7, date: date_MA7 },
+      { name: "MA_30", value: lastRow.MA_30, date: date_MA30 },
+    ];
+
+    // console.log("Historical Data:", historicalData);
+    return historicalData;
+  }
+
   async function loadModel() {
     const model = await tf.loadGraphModel(
       '/model/tfjs_model_json/model.json',
@@ -88,12 +129,19 @@ export function predict(formData) {
     ];
 
     const predictedPrice = await predictPrice(model, inputData);
-    return predictedPrice;
+    const historicalData = await fetchBBRIData();
+    // return predictedPrice;
+    return {
+      result:  {
+        predictedPrice: predictedPrice * 0.9,
+        historicalData: historicalData
+      }
+    };
   }
 
   runPrediction()
-    .then((predictedPrice) => {
-      console.log('Predicted Price:', predictedPrice * 0.9);
+    .then((result) => {
+      console.log('Predicted Price:', result);
     })
     .catch((error) => {
       console.error('Error during prediction:', error);
