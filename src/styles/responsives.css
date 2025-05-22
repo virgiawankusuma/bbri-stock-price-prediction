@@ -18,6 +18,10 @@
     max-width: 80%;
     font-size: 1.25rem;
   }
+
+  .prediction-value {
+    font-size: 2.5rem;
+  }
   
   .illustration {
     width: 100%;
@@ -36,6 +40,10 @@
   
   .hero-description {
     font-size: 1.5rem;
+  }
+
+  .prediction-value {
+    font-size: 2.65rem;
   }
 }
 
