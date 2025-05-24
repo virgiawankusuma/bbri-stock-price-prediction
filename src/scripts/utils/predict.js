@@ -104,7 +104,7 @@ export function predict(formData) {
 
   async function loadModel() {
     const model = await tf.loadGraphModel(
-      '/model/tfjs_model_json/model.json',
+      '/model/tfjs_model_json/old/model.json',
     );
     // console.log('Model loaded:', model);
     return model;
