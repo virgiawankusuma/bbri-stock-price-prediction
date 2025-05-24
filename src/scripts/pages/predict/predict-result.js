@@ -14,7 +14,6 @@ export default class PredictResult {
   }
 
   render() {
-    
     const predictionValue = parseFloat((Math.floor(this.result?.predictedPrice.value * 100) / 100).toFixed(2)) ?? 0;
     const predictionDirection = this.result?.predictedPrice.direction;
     const predictionDirectionIcon = predictionDirection === 'up' ? 'fa-caret-up text-success' : 'fa-caret-down text-danger';
