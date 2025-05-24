@@ -79,10 +79,10 @@ export default class HomePage {
               Data historis harga saham diperoleh dari:
               <ul class="m-0 py-0 ps-4">
                 <li>
-                  <a class="btn btn-light btn-sm m-0 p-0" href="https://www.ir-bri.com/stock_chart_interactive.html" target="_blank">Investor Relations: Interactive Charts PT. Bank Rakyat Indonesia ↗️</a>
+                  <a class="btn btn-light text-start btn-sm m-0 p-0" href="https://www.ir-bri.com/stock_chart_interactive.html" target="_blank">Investor Relations: Interactive Charts PT. Bank Rakyat Indonesia ↗️</a>
                 </li>
                 <li>
-                  <a class="btn btn-light btn-sm m-0 p-0" href="https://finance.yahoo.com/quote/BBRI.JK/history" target="_blank">Yahoo Finance ↗️</a>
+                  <a class="btn btn-light text-start btn-sm m-0 p-0" href="https://finance.yahoo.com/quote/BBRI.JK/history" target="_blank">Yahoo Finance ↗️</a>
                 </li>
               </ul>
               <h5 class="mt-4">⚙️ Metode Pengolahan</h5>
