@@ -14,45 +14,48 @@ export default class PredictForm {
       <section class="container my-5">
         <h2 class="section-title d-none">📊 Masukkan Data Saham</h2>
         <h3 class="section-subtitle">Data Saham Harian</h2>
-        <p class="mb-4">Silakan masukkan informasi saham berikut:</p>
-        <form class="row g-3" id="predict-form">
+        <p class="mb-0">Silakan masukkan informasi saham berikut:</p>
+        <small class="text-muted mb-4">
+          Anda dapat melihat data historis saham BBRI di <a href="https://www.ir-bri.com/stock_chart_interactive.html" target="_blank" rel="noopener noreferrer">IR:IC BRI</a> atau <a href="https://finance.yahoo.com/quote/BBRI.JK/history" target="_blank" rel="noopener noreferrer">Yahoo Finance</a>.<br>  
+        </small>
+        <form class="row g-3 mt-4" id="predict-form">
           <div class="col-md-6 mb-3">
             <label class="form-label">📅 Tanggal</label>
             <input type="date" class="form-control" placeholder="2025-05-08" value="${new Date().toISOString().split('T')[0]}">
           </div>
           <div class="col-md-6 mb-3">
-            <label class="form-label">💰 Harga Pembukaan</label>
+            <label class="form-label">💰 Harga Pembukaan (Open)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4212" value="4280.00">
+              <input type="number" class="form-control" placeholder="4212" value="4350.00">
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label class="form-label">📈 Harga Tertinggi</label>
+            <label class="form-label">📈 Harga Tertinggi (High)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4466" value="4310.00">
+              <input type="number" class="form-control" placeholder="4466" value="4370.00">
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label class="form-label">📉 Harga Terendah</label>
+            <label class="form-label">📉 Harga Terendah (Low)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4145" value="4240.00">
+              <input type="number" class="form-control" placeholder="4145" value="4330.00">
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">📊 Volume Transaksi</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="180000" value="208291800">
+              <input type="number" class="form-control" placeholder="180000" value="108182800">
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label class="form-label">📏 Harga Penutupan (Adjusted)</label>
+            <label class="form-label">📏 Harga Penutupan (Adjusted Close)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4212" value="4300.00">
+              <input type="number" class="form-control" placeholder="4212" value="4350.00">
             </div> 
           </div>
         </form>
