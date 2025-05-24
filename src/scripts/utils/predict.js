@@ -130,13 +130,15 @@ export function predict(formData) {
 
     const predictedPrice = await predictPrice(model, inputData);
     const historicalData = await fetchBBRIData();
+
+    const predictedPriceValue = predictedPrice * 0.9; // Mengalikan dengan 0.9 untuk mendapatkan harga prediksi yang lebih realistis
     // return predictedPrice;
     return {
       predictedPrice: {
-        value: predictedPrice * 0.9,
-        direction: predictedPrice > formData.adjusted_close ? 'up' : 'down',
-        change: Math.abs(predictedPrice - formData.adjusted_close).toFixed(2),
-        percentageChange: ((((predictedPrice * 0.9) - formData.adjusted_close) / formData.adjusted_close) * 100).toFixed(2)
+        value: predictedPriceValue,
+        direction: predictedPriceValue > formData.adjusted_close ? 'up' : 'down',
+        change: parseFloat(Math.abs(predictedPriceValue - formData.adjusted_close).toFixed(2)),
+        percentageChange: parseFloat((((predictedPriceValue - formData.adjusted_close) / formData.adjusted_close) * 100).toFixed(2)),
       },
       historicalData: historicalData
     };

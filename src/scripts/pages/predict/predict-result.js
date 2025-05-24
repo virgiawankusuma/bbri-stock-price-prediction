@@ -15,7 +15,7 @@ export default class PredictResult {
 
   render() {
     
-    const predictionValue = (Math.floor(this.result?.predictedPrice.value * 100) / 100).toFixed(2) ?? '-';
+    const predictionValue = parseFloat((Math.floor(this.result?.predictedPrice.value * 100) / 100).toFixed(2)) ?? 0;
     const predictionDirection = this.result?.predictedPrice.direction;
     const predictionDirectionIcon = predictionDirection === 'up' ? 'fa-caret-up text-success' : 'fa-caret-down text-danger';
 
@@ -44,8 +44,8 @@ export default class PredictResult {
               <p class="text-muted">
                 ${predictionDate}
               </p>
-              <div class="text-success mb-3">
-                ${predictionDirection === 'up' ? '+' : '-'} ${predictionChange}% dari harga penutupan sebelumnya
+              <div class="mb-3 ${predictionDirection === 'up' ? 'text-success' : 'text-danger'}"> 
+                ${predictionDirection === 'up' ? '+' : ''} ${predictionChange}% dari harga penutupan sebelumnya
               </div>
               <div class="d-flex justify-content-center gap-2 mt-3">
                 <button class="btn btn-primary" id="predict-detail-button">Lihat Detail <i class="fa-solid fa-plus"></i></button>
