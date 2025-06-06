@@ -1,7 +1,10 @@
 import Chart from 'chart.js/auto';
-import { getRelativePosition } from 'chart.js/helpers';
 
 export default class PredictChart {
+  costructor() {
+    this.result = null; // untuk nyimpan data hasil prediksi
+  }
+
   render() {
     return `
       <h2 class="section-title mb-3 text-center">📈 Grafik Perbandingan Harga</h2>
@@ -13,21 +16,47 @@ export default class PredictChart {
   }
 
   init() {
+    const previous_Data = this.result?.historicalData.Previous_Data || [];
+    const predictedPreviousPrice = this.result?.predictedPreviousPrice || [];
+
+    let labels = []
+    let actualPrices = [];
+    for (let i = 0; i < 5; i++) {
+      const lagKey = `Lag_${i}`;
+      const lagData = previous_Data[lagKey];
+      if (lagData && lagData.Close && lagData.Close.date) {
+        labels.push(lagData.Close.date);
+        actualPrices.push(lagData.Close.value);
+      }
+    }
+
+    let predictedPrices = [];
+    for (let i = 0; i < 5; i++) {
+      const lagKey = `Lag_${i}`;
+      const lagData = predictedPreviousPrice[lagKey];
+      if (lagData && lagData.Close) {
+        predictedPrices.push((Math.floor(lagData.Close.value * 100) / 100).toFixed(0));
+      } else {
+        predictedPrices.push(null); // Jika tidak ada data, tambahkan null
+      }
+    }
+
     const ctx = document.getElementById('predict-chart').getContext('2d');
-    const chart = new Chart(ctx, {
+    new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['2025-05-08', '2025-05-09', '2025-05-10', '2025-05-11', '2025-05-12'],
+        labels : labels.reverse(),
+        // labels: 
         datasets: [
           {
             label: 'Harga Aktual',
-            data: [1505, 1510, 1520, 1530, 1540],
+            data: actualPrices.reverse(),
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
           },
           {
             label: 'Harga Prediksi',
-            data: [1512, 1520, 1530, 1540, 1550],
+            data: predictedPrices.reverse(),
             borderColor: 'rgba(255, 99, 132, 1)',
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
           },
@@ -50,7 +79,7 @@ export default class PredictChart {
     canvas.parentNode.appendChild(tooltip);
   }
 
-  mount(container) {
+  mount(container, result) {
     if (typeof container === 'string') {
       container = document.getElementById(container);
     }
@@ -60,6 +89,7 @@ export default class PredictChart {
       return;
     }
     
+    this.result = result; // Simpan hasil prediksi untuk digunakan di render
     container.innerHTML = this.render();
     this.init();
     this.element = container;
