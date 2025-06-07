@@ -1,5 +1,14 @@
+import getActualPredictionPrice  from '../../utils/get_actual_prediction_price.js';
+
 export default class PredictTable {
+  constructor() {
+    this.result = null; // untuk nyimpan data hasil prediksi
+  }
+  
   render() {
+    getActualPredictionPrice(this.result);
+    const { labels, actualPrices, predictedPrices } = getActualPredictionPrice(this.result);
+
     return `
       <h2 class="section-title mb-3 text-center">📉 Tabel Data Prediksi</h2>
       <h3 class="section-subtitle text-center">Detail Angka Prediksi untuk Transparansi</h3>
@@ -14,36 +23,16 @@ export default class PredictTable {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>2025-05-08</td>
-              <td>Rp. 1.505</td>
-              <td>Rp. 1.512</td>
-              <td class="text-success">+Rp. 7</td>
-            </tr>
-            <tr>
-              <td>2025-05-09</td>
-              <td>Rp. 1.510</td>
-              <td>Rp. 1.520</td>
-              <td class="text-success">+Rp. 10</td>
-            </tr>
-            <tr>
-              <td>2025-05-10</td>
-              <td>Rp. 1.520</td>
-              <td>Rp. 1.530</td>
-              <td class="text-success">+Rp. 10</td>
-            </tr>
-            <tr>
-              <td>2025-05-11</td>
-              <td>Rp. 1.530</td>
-              <td>Rp. 1.540</td>
-              <td class="text-success">+Rp. 10</td>
-            </tr>
-            <tr>
-              <td>2025-05-12</td>
-              <td>Rp. 1.540</td>
-              <td>Rp. 1.550</td>
-              <td class="text-success">+Rp. 10</td>
-            </tr>
+            ${labels.map((label, index) => `
+              <tr>
+                <td>${label}</td>
+                <td>Rp. ${actualPrices[index] || '-'}</td>
+                <td>Rp. ${predictedPrices[index] || '-'}</td>
+                <td class="${predictedPrices[index] > actualPrices[index] ? 'text-success' : 'text-danger'}">
+                  ${predictedPrices[index] ? `Rp. ${Math.abs(predictedPrices[index] - actualPrices[index])}` : '-'}
+                </td>
+              </tr>
+            `).join('')}
           </tbody>
         </table>
       </div>
@@ -54,7 +43,7 @@ export default class PredictTable {
     console.log('PredictTable initialized');
   }
 
-  mount(container) {
+  mount(container, result) {
     if (typeof container === 'string') {
       container = document.getElementById(container);
     }
@@ -64,6 +53,7 @@ export default class PredictTable {
       return;
     }
     
+    this.result = result; // Simpan hasil prediksi untuk digunakan di render
     container.innerHTML = this.render();
     this.init();
     this.element = container;
