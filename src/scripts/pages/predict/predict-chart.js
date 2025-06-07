@@ -1,4 +1,5 @@
 import Chart from 'chart.js/auto';
+import getActualPredictionPrice  from '../../utils/get_actual_prediction_price.js';
 
 export default class PredictChart {
   costructor() {
@@ -16,30 +17,8 @@ export default class PredictChart {
   }
 
   init() {
-    const previous_Data = this.result?.historicalData.Previous_Data || [];
-    const predictedPreviousPrice = this.result?.predictedPreviousPrice || [];
-
-    let labels = []
-    let actualPrices = [];
-    for (let i = 0; i < 5; i++) {
-      const lagKey = `Lag_${i}`;
-      const lagData = previous_Data[lagKey];
-      if (lagData && lagData.Close && lagData.Close.date) {
-        labels.push(lagData.Close.date);
-        actualPrices.push(lagData.Close.value);
-      }
-    }
-
-    let predictedPrices = [];
-    for (let i = 0; i < 5; i++) {
-      const lagKey = `Lag_${i}`;
-      const lagData = predictedPreviousPrice[lagKey];
-      if (lagData && lagData.Close) {
-        predictedPrices.push((Math.floor(lagData.Close.value * 100) / 100).toFixed(0));
-      } else {
-        predictedPrices.push(null); // Jika tidak ada data, tambahkan null
-      }
-    }
+    getActualPredictionPrice(this.result);
+    const { labels, actualPrices, predictedPrices } = getActualPredictionPrice(this.result);
 
     const ctx = document.getElementById('predict-chart').getContext('2d');
     new Chart(ctx, {
