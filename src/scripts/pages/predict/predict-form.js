@@ -1,5 +1,7 @@
-import PredictResult from "./predict-result";
-import { validateForm, predict } from "../../utils/predict.js";
+import PredictResult from './predict-result';
+import { historicalBBRIStockData } from '../../utils/get_historical_data.js';
+import { setupDatePicker } from '../../utils/index.js';
+import { validateForm, predict } from '../../utils/predict.js';
 
 export default class PredictForm {
   constructor() {
@@ -10,6 +12,10 @@ export default class PredictForm {
   }
 
   render() {
+    const jsonData = JSON.parse(localStorage.getItem('fetchData'));
+    const historicalData = historicalBBRIStockData(jsonData).data;
+    const lastRow = historicalData[historicalData.length - 1];
+
     return `
       <section class="container my-5">
         <h2 class="section-title d-none">📊 Masukkan Data Saham</h2>
@@ -21,41 +27,41 @@ export default class PredictForm {
         <form class="row g-3 mt-4" id="predict-form">
           <div class="col-md-6 mb-3">
             <label class="form-label">📅 Tanggal</label>
-            <input type="date" class="form-control" placeholder="2025-05-08" value="${new Date().toISOString().split('T')[0]}">
+            <input id="datePicker" type="text" class="form-control" placeholder="Loading..." readonly>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">💰 Harga Pembukaan (Open)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4212" value="4350.00">
+              <input type="number" class="form-control" placeholder="4212" value="${lastRow.Open}">
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">📈 Harga Tertinggi (High)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4466" value="4370.00">
+              <input type="number" class="form-control" placeholder="4466" value="${lastRow.High}">
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">📉 Harga Terendah (Low)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4145" value="4330.00">
+              <input type="number" class="form-control" placeholder="4145" value="${lastRow.Low}">
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">📊 Volume Transaksi</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="180000" value="108182800">
+              <input type="number" class="form-control" placeholder="180000" value="${lastRow.Volume}">
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">📏 Harga Penutupan (Adjusted Close)</label>
             <div class="input-group">
               <span class="input-group-text">Rp.</span>
-              <input type="number" class="form-control" placeholder="4212" value="4350.00">
+              <input type="number" class="form-control" placeholder="4212" value="${lastRow.AdjustedClose}">
             </div> 
           </div>
         </form>
@@ -78,8 +84,14 @@ export default class PredictForm {
     `;
   }
 
-  // Method untuk menginisialisasi event listeners
   init() {
+    // Inisialisasi date picker and if setup still loading, disable date input and show loading message
+    const datePicker = document.getElementById('datePicker')
+    if (datePicker) {
+      datePicker.readOnly = false;
+      setupDatePicker();
+    }
+
     document.title = 'Prediksi Harga - BBRI Stock Price Prediction';
     // Inisialisasi event listeners
     const predictForm = document.getElementById('predict-form');
@@ -107,7 +119,7 @@ export default class PredictForm {
         try {
           const result = await this.predict(formData);
           // console.log('Predicted Result:', result);
-          
+
           // Misal kamu mau render hasilnya:
           this.predictResult.mount('predict-result-container', result);
         } catch (error) {
@@ -133,12 +145,12 @@ export default class PredictForm {
     if (typeof container === 'string') {
       container = document.getElementById(container);
     }
-    
+
     if (!container) {
       console.error('Container not found');
       return;
     }
-    
+
     container.innerHTML = this.render();
     this.init();
     this.element = container;
@@ -161,5 +173,4 @@ export default class PredictForm {
   destroy() {
     this.unmount();
   }
-
 }

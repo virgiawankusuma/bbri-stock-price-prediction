@@ -17,16 +17,7 @@ export default class PredictResult {
     const predictionValue = parseFloat((Math.floor(this.result?.predictedPrice.value * 100) / 100).toFixed(2)) ?? 0;
     const predictionDirection = this.result?.predictedPrice.direction;
     const predictionDirectionIcon = predictionDirection === 'up' ? 'fa-caret-up text-success' : 'fa-caret-down text-danger';
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const predictionDate = tomorrow
-      ? `(${new Intl.DateTimeFormat("id-ID", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        }).format(new Date(tomorrow))})`
-      : "(Tanggal tidak tersedia)";
+    const predictionDate = this.result?.predictedPrice.predictedDate ?? '';
     const predictionChange = this.result?.predictedPrice.percentageChange ?? '';
 
     return `
