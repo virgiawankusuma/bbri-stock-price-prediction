@@ -1,5 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 import { historicalBBRIStockData } from './get_historical_data';
+import { getWorkingDateAfterInputDate } from "./index";
 
 export function validateForm(formData) {
   // Validasi data kosong
@@ -17,30 +18,6 @@ export function validateForm(formData) {
       alert(`Field ${field} harus berupa angka`);
       return;
     }
-  }
-
-  // Validasi tanggal
-  const dateField = formData.tanggal;
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (!dateRegex.test(dateField)) {
-    alert('Format tanggal tidak valid. Gunakan format YYYY-MM-DD.');
-    return;
-  }
-
-  // Validasi tanggal tidak lebih dari hari ini
-  const today = new Date();
-  const inputDate = new Date(dateField);
-  if (inputDate > today) {
-    alert('Tanggal tidak boleh lebih dari hari ini.');
-    return;
-  }
-
-  // Validasi tanggal tidak lebih dari 30 hari yang lalu
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(today.getDate() - 30);
-  if (inputDate < thirtyDaysAgo) {
-    alert('Tanggal tidak boleh lebih dari 30 hari yang lalu.');
-    return;
   }
 
   // Validasi harga tidak boleh negatif
@@ -139,7 +116,6 @@ export function predict(formData) {
       MA_30: { value: lastRow.MA_30, date: date_MA30 }
     };
 
-    // console.log("Historical Data:", historicalData);
     return historicalData;
   }
 
@@ -147,7 +123,6 @@ export function predict(formData) {
     const model = await tf.loadGraphModel(
       '/model/tfjs_model_json/old/model.json',
     );
-    // console.log('Model loaded:', model);
     return model;
   }
 
@@ -157,6 +132,30 @@ export function predict(formData) {
     const predictedPrice = prediction.dataSync()[0];
     return predictedPrice;
   }
+
+  async function evaluateModel(model, inputData, actualValue) {
+    const inputTensor = tf.tensor2d([inputData], [1, 5]);
+
+    // Prediksi
+    const predictionTensor = model.predict(inputTensor);
+    const prediction = predictionTensor.dataSync()[0];
+
+    // Konversi ke tensor nilai aktual dan prediksi
+    const yTrue = tf.tensor1d([actualValue]);
+    const yPred = tf.tensor1d([prediction]);
+
+    // Hitung MSE
+    const mseTensor = tf.metrics.meanSquaredError(yTrue, yPred);
+    const mse = mseTensor.dataSync()[0];
+
+    // Hitung MAPE manual (karena tfjs belum punya built-in MAPE)
+    const absDiff = yTrue.sub(yPred).abs();
+    const percentageError = absDiff.div(yTrue).mul(100);
+    const mape = percentageError.dataSync()[0];
+
+    return { mse, mape };
+  }
+
 
   async function runPrediction() {
     const model = await loadModel();
@@ -171,6 +170,7 @@ export function predict(formData) {
     ];
 
     const predictedPrice = await predictPrice(model, inputData);
+    const evaluatedModel = await evaluateModel(model, inputData, formData.adjusted_close);
 
     const inputDataLagFromHistorical = [
       [
@@ -258,9 +258,11 @@ export function predict(formData) {
     };
 
     const predictedPriceValue = predictedPrice * 0.9; // Mengalikan dengan 0.9 untuk mendapatkan harga prediksi yang lebih realistis
-    // return predictedPrice;
+
+    const predictedDate = await getWorkingDateAfterInputDate(formData.tanggal);
     return {
       predictedPrice: {
+        predictedDate: predictedDate,
         value: predictedPriceValue,
         direction: predictedPriceValue > formData.adjusted_close ? 'up' : 'down',
         change: parseFloat(Math.abs(predictedPriceValue - formData.adjusted_close).toFixed(2)),
@@ -273,7 +275,8 @@ export function predict(formData) {
         Lag_4: predictedPreviousPrice.Lag_4,
         Lag_5: predictedPreviousPrice.Lag_5
       },
-      historicalData: historicalData
+      historicalData: historicalData,
+      evaluation: evaluatedModel
     };
   }
 
