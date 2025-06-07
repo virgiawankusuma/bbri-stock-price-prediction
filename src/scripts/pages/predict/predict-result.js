@@ -117,4 +117,11 @@ export default class PredictResult {
     this.init();
     this.element = container;
   }
+
+  unmount() {
+    if (this.element) {
+      this.element.innerHTML = '';
+      this.element = null;
+    }
+  }
 }
