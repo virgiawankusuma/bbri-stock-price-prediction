@@ -72,7 +72,7 @@ export default class PredictForm {
 
         <div class="d-flex gap-2 align-items-center">
           <button class="btn btn-primary px-4" id="predict-button" type="submit" form="predict-form">
-            Kirim Data & Lihat Prediksi
+            Kirim Data & Lihat Prediksi 
           </button>
           <button class="btn btn-danger d-flex align-items-center" id="reset-button" type="reset" form="predict-form">
             <i class="fa-solid fa-rotate-left me-1"></i>
@@ -110,16 +110,31 @@ export default class PredictForm {
         adjusted_close: parseFloat(inputFields[5].value),
       };
 
-      if (this.validateForm(formData)) {
-        try {
-          const result = await this.predict(formData);
+      // is loading button
+      predictButton.disabled = true;
+      predictButton.innerHTML = 'Memproses... <i class="fa-solid fa-spinner fa-spin"></i>';
 
-          // Misal kamu mau render hasilnya:
-          this.predictResult.mount('predict-result-container', result);
-        } catch (error) {
-          console.error('Gagal melakukan prediksi:', error);
-        }
+      // Validasi form
+      if (!this.validateForm(formData)) {
+        predictButton.disabled = false;
+        predictButton.innerHTML = 'Kirim Data & Lihat Prediksi';
+        return;
       }
+
+      // Lakukan prediksi
+      try {
+        const result = await this.predict(formData);
+
+        // Render hasil prediksi
+        this.predictResult.mount('predict-result-container', result);
+      } catch (error) {
+        console.error('Gagal melakukan prediksi:', error);
+      } finally {
+        // Enable button kembali
+        predictButton.disabled = false;
+        predictButton.innerHTML = 'Kirim Data & Lihat Prediksi';
+      }
+      
     });
 
     resetButton?.addEventListener('click', (event) => {
