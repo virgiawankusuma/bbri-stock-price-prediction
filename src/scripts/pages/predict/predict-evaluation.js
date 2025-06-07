@@ -37,7 +37,6 @@ export default class PredictEvaluation {
   }
 
   init() {
-    console.log('PredictEvaluation initialized');
   }
 
   mount(container, result) {
