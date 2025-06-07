@@ -74,10 +74,10 @@ export default class PredictForm {
           <button class="btn btn-primary px-4" id="predict-button" type="submit" form="predict-form">
             Kirim Data & Lihat Prediksi
           </button>
-          <!--<span>/</span>
-          <button class="btn btn-outline-primary d-flex align-items-center" id="upload-button" type="button">
-            <i class="bi bi-upload me-2"></i> Upload File CSV
-          </button>-->
+          <button class="btn btn-danger d-flex align-items-center" id="reset-button" type="reset" form="predict-form">
+            <i class="fa-solid fa-rotate-left me-1"></i>
+            Reset
+          </button>
         </div>
       </section>
       <div id="predict-result-container"></div>
@@ -97,13 +97,10 @@ export default class PredictForm {
     const predictForm = document.getElementById('predict-form');
     const inputFields = predictForm.querySelectorAll('input');
     const predictButton = document.getElementById('predict-button');
-    const uploadButton = document.getElementById('upload-button');
+    const resetButton = document.getElementById('reset-button');
 
     predictButton.addEventListener('click', async (event) => {
       event.preventDefault();
-
-      // this.predictResult.mount('predict-result-container');
-
       const formData = {
         tanggal: inputFields[0].value,
         open: parseFloat(inputFields[1].value),
@@ -113,12 +110,9 @@ export default class PredictForm {
         adjusted_close: parseFloat(inputFields[5].value),
       };
 
-      this.validateForm(formData);
-
       if (this.validateForm(formData)) {
         try {
           const result = await this.predict(formData);
-          // console.log('Predicted Result:', result);
 
           // Misal kamu mau render hasilnya:
           this.predictResult.mount('predict-result-container', result);
@@ -126,17 +120,27 @@ export default class PredictForm {
           console.error('Gagal melakukan prediksi:', error);
         }
       }
-
-      // Reset form setelah pengiriman
-      // inputFields.forEach((input) => {
-      //   input.value = '';
-      // });
-      // predictForm.reset();
     });
 
-    uploadButton.addEventListener('click', () => {
-      console.log('Upload button clicked');
-      // Implementasi logika untuk mengupload file CSV
+    resetButton?.addEventListener('click', (event) => {
+      event.preventDefault();
+      // Reset semua input field ke nilai default
+      inputFields.forEach((input) => {
+        if (input.type === 'number') {
+          input.value = '';
+        } else if (input.type === 'text') {
+          input.value = '';
+        }
+      });
+      // Reset date picker
+      const datePicker = document.getElementById('datePicker');
+      if (datePicker) {
+        datePicker.value = '';
+        datePicker.readOnly = false;
+        datePicker.placeholder = '2025-01-01';
+      }
+      // Unmount predict result
+      this.predictResult.unmount();
     });
   }
 
