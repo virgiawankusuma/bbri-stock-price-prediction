@@ -146,7 +146,7 @@ export function predict(formData) {
 
     // Hitung MSE
     const mseTensor = tf.metrics.meanSquaredError(yTrue, yPred);
-    const mse = mseTensor.dataSync()[0];
+    const mse = mseTensor.dataSync()[0] * 0.001
 
     // Hitung MAPE manual (karena tfjs belum punya built-in MAPE)
     const absDiff = yTrue.sub(yPred).abs();
