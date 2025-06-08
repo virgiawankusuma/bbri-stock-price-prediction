@@ -22,12 +22,12 @@ export default class PredictEvaluation {
       <h3 class="section-subtitle text-center">Mengukur Seberapa Dekat Prediksi dengan Kenyataan</h3>
       <div class="metric-box">
         <div class="row mb-2">
-          <div class="col-md-8">Nilai MAPE (Mean Absolute Percentage Error):</div>
-          <div class="col-md-4 text-primary fw-bold">${modelEvaluation.mape ? modelEvaluation.mape.toFixed(2) + '%' : 'N/A'}</div>
+          <div class="col-8 col-sm-10 col-md-8">Nilai MAPE (Mean Absolute Percentage Error):</div>
+          <div class="col-4 col-sm-2 col-md-4 text-primary fw-bold text-end">${modelEvaluation.mape ? modelEvaluation.mape.toFixed(2) + '%' : 'N/A'}</div>
         </div>
         <div class="row mb-3">
-          <div class="col-md-8">Nilai MSE (Mean Squared Error)</div>
-          <div class="col-md-4 text-primary fw-bold">${modelEvaluation.mse ? modelEvaluation.mse.toFixed(2) : 'N/A'}</div>
+          <div class="col-8 col-sm-10 col-md-8">Nilai MSE (Mean Squared Error)</div>
+          <div class="col-4 col-sm-2 col-md-4 text-primary fw-bold text-end">${modelEvaluation.mse ? modelEvaluation.mse.toFixed(2) : 'N/A'}</div>
         </div>
         <p class="text-muted mb-0 small">
           ${textResult}

@@ -9,16 +9,14 @@ export default class PredictSummary {
     const predictionDirection = this.result?.predictedPrice.direction;
     const predictionChange = this.result?.predictedPrice.percentageChange ?? '';
 
-    const summaryText = `Harga saham BBRI diprediksi <b>${predictionDirection === 'up' ? 'naik' : 'turun'}</b> sebesar <b>${Math.abs(predictionChange)}%</b> pada <b>${predictionDate}</b> dibandingkan dengan harga penutupan sebelumnya <br><b>Rp. ${predictionValue}</b>. Ini menunjukkan bahwa ${predictionDirection === 'up' ? 'investor optimis' : 'investor pesimis'} terhadap kinerja saham BBRI di masa mendatang.`;
+    const summaryText = `Harga saham BBRI diprediksi <b>${predictionDirection === 'up' ? 'naik' : 'turun'}</b> sebesar <b>${Math.abs(predictionChange)}%</b> pada <b>${predictionDate}</b> dibandingkan dengan harga penutupan sebelumnya <b>Rp. ${predictionValue}</b>. Ini menunjukkan bahwa ${predictionDirection === 'up' ? 'investor optimis' : 'investor pesimis'} terhadap kinerja saham BBRI di masa mendatang.`;
 
     return `
       <h2 class="section-title mb-3 text-center">📄 Ringkasan Kesimpulan</h2>
       <h3 class="section-subtitle text-center">Kesimpulan Singkat dari Prediksi yang dihasilkan</h3>
-      <div class="quote-text">
-        <blockquote class="blockquote">
-          <p>${summaryText}</p>
-        </blockquote>
-      </div>
+      <q class="quote-text">
+        ${summaryText}
+      </q>
     `;
   }
 
