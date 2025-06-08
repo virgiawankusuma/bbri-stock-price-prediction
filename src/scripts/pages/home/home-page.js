@@ -66,7 +66,7 @@ export default class HomePage {
           <div class="col-md-6 mb-4">
             <div class="info-section">
               <h4>👨‍💻 Achmad Eriel Pangestu</h4>
-              <p class="text-muted">Mahasiswa Teknik Informatika, UNISNU Jepara</p>
+              <p>Mahasiswa Teknik Informatika, UNISNU Jepara</p>
               
               <h5 class="mt-4">📌 Tujuan Pengembangan</h5>
               <p>Sebagai pemenuhan tugas akhir/skripsi pengembang dan Membantu investor memprediksi harga saham berbasis web dengan Algoritma Least Square untuk dan MAPE sebagai evaluasi akurasi.</p>
@@ -76,7 +76,7 @@ export default class HomePage {
           <div class="col-md-6 mb-4">
             <div class="info-section">
               <h4>📊 Sumber Data Saham</h4>
-              Data historis harga saham diperoleh dari:
+              <p class="mb-0">Data historis harga saham diperoleh dari:</p>
               <ul class="m-0 py-0 ps-4">
                 <li>
                   <a class="btn btn-light text-start btn-sm m-0 p-0" href="https://www.ir-bri.com/stock_chart_interactive.html" target="_blank">Investor Relations: Interactive Charts PT. Bank Rakyat Indonesia ↗️</a>

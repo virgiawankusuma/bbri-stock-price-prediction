@@ -257,6 +257,10 @@ body {
   line-height: 1.6;
 }
 
+.info-section .btn {
+  color: #666;
+}
+
 .info-icon {
   font-size: 1.2rem;
   color: var(--primary-color);
