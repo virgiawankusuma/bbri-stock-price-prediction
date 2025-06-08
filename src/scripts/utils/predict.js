@@ -45,19 +45,23 @@ export function predict(formData) {
     const processed = historicalBBRIStockData(jsonData);
     const processedData = processed.data;
 
-    // Baris terakhir
-    const lastRow = processedData[processedData.length - 1];
-
+    // Cari Baris terakhir berdasarkan formData.tanggal
+    const targetDate = formData.tanggal;
+    const targetDateIndex = processedData.findIndex(row => row.Date === targetDate);
+    const lastIndex = processedData.length - targetDateIndex;
+    const lastRowIndex = processedData.length - lastIndex;
+    const lastRow = processedData[lastRowIndex];
+    
     // Ambil tanggal-tanggal penting
-    const date_Close_Lag_1 = processedData[processedData.length - 1]?.Date ?? null;
-    const date_Close_Lag_2 = processedData[processedData.length - 2]?.Date ?? null;
-    const date_Close_Lag_3 = processedData[processedData.length - 3]?.Date ?? null;
-    const date_Close_Lag_4 = processedData[processedData.length - 4]?.Date ?? null;
-    const date_Close_Lag_5 = processedData[processedData.length - 5]?.Date ?? null;
+    const date_Close_Lag_1 = processedData[lastRowIndex]?.Date ?? null;
+    const date_Close_Lag_2 = processedData[lastRowIndex - 1]?.Date ?? null;
+    const date_Close_Lag_3 = processedData[lastRowIndex - 2]?.Date ?? null;
+    const date_Close_Lag_4 = processedData[lastRowIndex - 3]?.Date ?? null;
+    const date_Close_Lag_5 = processedData[lastRowIndex - 4]?.Date ?? null;
     const date_Current = lastRow.Date;
-    const date_Daily_Return = `${processedData[processedData.length - 1]?.Date} ➝ ${lastRow.Date}`;
-    const date_MA5 = `${processedData[processedData.length - 5]?.Date} ➝ ${lastRow.Date}`;
-    const date_MA30 = `${processedData[processedData.length - 30]?.Date} ➝ ${lastRow.Date}`;
+    const date_Daily_Return = `${processedData[lastRowIndex]?.Date} ➝ ${lastRow.Date}`;
+    const date_MA5 = `${processedData[lastRowIndex - 4]?.Date} ➝ ${lastRow.Date}`;
+    const date_MA30 = `${processedData[lastRowIndex - 29]?.Date} ➝ ${lastRow.Date}`;
 
     // Bentuk historical data dengan tanggal
     const historicalData = {
@@ -71,44 +75,44 @@ export function predict(formData) {
       Adjusted_Close: { value: lastRow.AdjustedClose, date: date_Current },
       Previous_Data : {
         Lag_1: {
-          Open: { value: processedData[processedData.length - 1].Open, date: date_Close_Lag_1 },
-          High: { value: processedData[processedData.length - 1].High, date: date_Close_Lag_1 },
-          Low: { value: processedData[processedData.length - 1].Low, date: date_Close_Lag_1 },
-          Close: { value: processedData[processedData.length - 1].Close, date: date_Close_Lag_1 },
-          Volume: { value: processedData[processedData.length - 1].Volume, date: date_Close_Lag_1 },
-          Adjusted_Close: { value: processedData[processedData.length - 1].AdjustedClose, date: date_Close_Lag_1 },
+          Open: { value: processedData[lastRowIndex].Open, date: date_Close_Lag_1 },
+          High: { value: processedData[lastRowIndex].High, date: date_Close_Lag_1 },
+          Low: { value: processedData[lastRowIndex].Low, date: date_Close_Lag_1 },
+          Close: { value: processedData[lastRowIndex].Close, date: date_Close_Lag_1 },
+          Volume: { value: processedData[lastRowIndex].Volume, date: date_Close_Lag_1 },
+          Adjusted_Close: { value: processedData[lastRowIndex].AdjustedClose, date: date_Close_Lag_1 },
         },
         Lag_2: {
-          Open: { value: processedData[processedData.length - 2].Open, date: date_Close_Lag_2 },
-          High: { value: processedData[processedData.length - 2].High, date: date_Close_Lag_2 },
-          Low: { value: processedData[processedData.length - 2].Low, date: date_Close_Lag_2 },
-          Close: { value: processedData[processedData.length - 2].Close, date: date_Close_Lag_2 },
-          Volume: { value: processedData[processedData.length - 2].Volume, date: date_Close_Lag_2 },
-          Adjusted_Close: { value: processedData[processedData.length - 2].AdjustedClose, date: date_Close_Lag_2 },
+          Open: { value: processedData[lastRowIndex - 1].Open, date: date_Close_Lag_2 },
+          High: { value: processedData[lastRowIndex - 1].High, date: date_Close_Lag_2 },
+          Low: { value: processedData[lastRowIndex - 1].Low, date: date_Close_Lag_2 },
+          Close: { value: processedData[lastRowIndex - 1].Close, date: date_Close_Lag_2 },
+          Volume: { value: processedData[lastRowIndex - 1].Volume, date: date_Close_Lag_2 },
+          Adjusted_Close: { value: processedData[lastRowIndex - 1].AdjustedClose, date: date_Close_Lag_2 },
         },
         Lag_3: {
-          Open: { value: processedData[processedData.length - 3].Open, date: date_Close_Lag_3 },
-          High: { value: processedData[processedData.length - 3].High, date: date_Close_Lag_3 },
-          Low: { value: processedData[processedData.length - 3].Low, date: date_Close_Lag_3 },
-          Close: { value: processedData[processedData.length - 3].Close, date: date_Close_Lag_3 },
-          Volume: { value: processedData[processedData.length - 3].Volume, date: date_Close_Lag_3 },
-          Adjusted_Close: { value: processedData[processedData.length - 3].AdjustedClose, date: date_Close_Lag_3 },
+          Open: { value: processedData[lastRowIndex - 2].Open, date: date_Close_Lag_3 },
+          High: { value: processedData[lastRowIndex - 2].High, date: date_Close_Lag_3 },
+          Low: { value: processedData[lastRowIndex - 2].Low, date: date_Close_Lag_3 },
+          Close: { value: processedData[lastRowIndex - 2].Close, date: date_Close_Lag_3 },
+          Volume: { value: processedData[lastRowIndex - 2].Volume, date: date_Close_Lag_3 },
+          Adjusted_Close: { value: processedData[lastRowIndex - 2].AdjustedClose, date: date_Close_Lag_3 },
         },
         Lag_4: {
-          Open: { value: processedData[processedData.length - 4].Open, date: date_Close_Lag_4 },
-          High: { value: processedData[processedData.length - 4].High, date: date_Close_Lag_4 },
-          Low: { value: processedData[processedData.length - 4].Low, date: date_Close_Lag_4 },
-          Close: { value: processedData[processedData.length - 4].Close, date: date_Close_Lag_4 },
-          Volume: { value: processedData[processedData.length - 4].Volume, date: date_Close_Lag_4 },
-          Adjusted_Close: { value: processedData[processedData.length - 4].AdjustedClose, date: date_Close_Lag_4 },
+          Open: { value: processedData[lastRowIndex - 3].Open, date: date_Close_Lag_4 },
+          High: { value: processedData[lastRowIndex - 3].High, date: date_Close_Lag_4 },
+          Low: { value: processedData[lastRowIndex - 3].Low, date: date_Close_Lag_4 },
+          Close: { value: processedData[lastRowIndex - 3].Close, date: date_Close_Lag_4 },
+          Volume: { value: processedData[lastRowIndex - 3].Volume, date: date_Close_Lag_4 },
+          Adjusted_Close: { value: processedData[lastRowIndex - 3].AdjustedClose, date: date_Close_Lag_4 },
         },
         Lag_5: {
-          Open: { value: processedData[processedData.length - 5].Open, date: date_Close_Lag_5 },
-          High: { value: processedData[processedData.length - 5].High, date: date_Close_Lag_5 },
-          Low: { value: processedData[processedData.length - 5].Low, date: date_Close_Lag_5 },
-          Close: { value: processedData[processedData.length - 5].Close, date: date_Close_Lag_5 },
-          Volume: { value: processedData[processedData.length - 5].Volume, date: date_Close_Lag_5 },
-          Adjusted_Close: { value: processedData[processedData.length - 5].AdjustedClose, date: date_Close_Lag_5 }
+          Open: { value: processedData[lastRowIndex - 4].Open, date: date_Close_Lag_5 },
+          High: { value: processedData[lastRowIndex - 4].High, date: date_Close_Lag_5 },
+          Low: { value: processedData[lastRowIndex - 4].Low, date: date_Close_Lag_5 },
+          Close: { value: processedData[lastRowIndex - 4].Close, date: date_Close_Lag_5 },
+          Volume: { value: processedData[lastRowIndex - 4].Volume, date: date_Close_Lag_5 },
+          Adjusted_Close: { value: processedData[lastRowIndex - 4].AdjustedClose, date: date_Close_Lag_5 }
         }
       },
       Daily_Return: { value: lastRow.Daily_Return, date: date_Daily_Return },
