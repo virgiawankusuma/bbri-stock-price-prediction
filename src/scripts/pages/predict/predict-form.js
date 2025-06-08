@@ -1,6 +1,6 @@
 import PredictResult from './predict-result';
 import { historicalBBRIStockData } from '../../utils/get_historical_data.js';
-import { setupDatePicker } from '../../utils/index.js';
+import { setupDatePicker, resetPredict } from '../../utils/index.js';
 import { validateForm, predict } from '../../utils/predict.js';
 
 export default class PredictForm {
@@ -139,23 +139,7 @@ export default class PredictForm {
 
     resetButton?.addEventListener('click', (event) => {
       event.preventDefault();
-      // Reset semua input field ke nilai default
-      inputFields.forEach((input) => {
-        if (input.type === 'number') {
-          input.value = '';
-        } else if (input.type === 'text') {
-          input.value = '';
-        }
-      });
-      // Reset date picker
-      const datePicker = document.getElementById('datePicker');
-      if (datePicker) {
-        datePicker.value = '';
-        datePicker.readOnly = false;
-        datePicker.placeholder = '2025-01-01';
-      }
-      // Unmount predict result
-      this.predictResult.unmount();
+      resetPredict(this.predictResult);
     });
   }
 

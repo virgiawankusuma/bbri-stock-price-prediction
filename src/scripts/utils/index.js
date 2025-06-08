@@ -150,3 +150,29 @@ export async function getWorkingDateAfterInputDate(inputDate) {
 
   return formatter.format(date);
 }
+
+export function resetPredict(predictResult = null) {
+  const inputFields = document.querySelectorAll('#predict-form input[type="number"], #predict-form input[type="text"]');
+  inputFields.forEach((input) => {
+    if (input.type === 'number') {
+      input.value = '';
+    } else if (input.type === 'text') {
+      input.value = '';
+    }
+  });
+
+  const datePicker = document.getElementById('datePicker');
+  if (datePicker) {
+    datePicker.value = '';
+    datePicker.readOnly = false;
+    datePicker.placeholder = '2025-01-01';
+  }
+
+  // Unmount predict result
+  if (predictResult) {
+    predictResult.unmount();
+  }
+
+  // Scroll ke atas
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}

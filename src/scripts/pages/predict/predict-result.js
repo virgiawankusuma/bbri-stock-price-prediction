@@ -3,6 +3,8 @@ import PredictTable from "./predict-table";
 import PredictSummary from "./predict-summary";
 import PredictEvaluation from "./predict-evaluation";
 
+import { resetPredict } from "../../utils/index.js";
+
 export default class PredictResult {
   constructor() {
     this.predictChart = new PredictChart();
@@ -66,7 +68,6 @@ export default class PredictResult {
         this.predictTable.mount('predict-table-container', this.result);
         this.predictSummary.mount('predict-summary-container', this.result);
         this.predictEvaluation.mount('predict-evaluation-container', this.result);
-        console.log('Detail button clicked');
 
         detailBtn.classList.add('visually-hidden');
         hideDetailBtn.classList.remove('visually-hidden');
@@ -85,18 +86,16 @@ export default class PredictResult {
         summaryContainer.innerHTML = '';
         evaluationContainer.innerHTML = '';
 
-        console.log('Hide detail button clicked');
-
         detailBtn.classList.remove('visually-hidden');
         hideDetailBtn.classList.add('visually-hidden');
       });
     }
 
     if (newPredBtn) {
-      newPredBtn.addEventListener('click', () => {
-        console.log('New prediction button clicked');
-        // Implementasi logika untuk membuat prediksi baru
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      newPredBtn.addEventListener('click', (event) => {      
+        event.preventDefault();
+        resetPredict();
+        this.unmount();
       });
     }
   }
