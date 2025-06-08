@@ -40,7 +40,6 @@ export default class PredictTable {
   }
 
   init() {
-    console.log('PredictTable initialized');
   }
 
   mount(container, result) {

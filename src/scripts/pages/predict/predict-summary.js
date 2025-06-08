@@ -4,8 +4,6 @@ export default class PredictSummary {
   }
 
   render() {
-    // Harga saham BBRI diprediksi naik sebesar 0.20% pada 9 Mei 2025 dibandingkan dengan harga penutupan sebelumnya (Rp 1.505)
-    console.log('Rendering PredictSummary with result:', this.result);
     const predictionDate = this.result?.predictedPrice.predictedDate ?? '';
     const predictionValue = parseFloat((Math.floor(this.result?.predictedPrice.value * 100) / 100).toFixed(2)) ?? 0;
     const predictionDirection = this.result?.predictedPrice.direction;
@@ -25,7 +23,6 @@ export default class PredictSummary {
   }
 
   init() {
-    console.log('PredictSummary initialized');
   }
 
   mount(container, result) {
