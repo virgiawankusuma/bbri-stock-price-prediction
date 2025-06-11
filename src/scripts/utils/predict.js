@@ -232,31 +232,31 @@ export function predict(formData) {
       Lag_1: {
         Close: {
           date: historicalData.Previous_Data.Lag_1.Close.date,
-          value: predictedPreviousPrices[0] * 0.87
+          value: predictedPreviousPrices[0] * 0.9
         }
       },
       Lag_2: {
         Close: {
           date: historicalData.Previous_Data.Lag_2.Close.date,
-          value: predictedPreviousPrices[1] * 0.87
+          value: predictedPreviousPrices[1] * 0.9
         }
       },
       Lag_3: {
         Close: {
           date: historicalData.Previous_Data.Lag_3.Close.date,
-          value: predictedPreviousPrices[2] * 0.87
+          value: predictedPreviousPrices[2] * 0.9
         }
       },
       Lag_4: {
         Close: {
           date: historicalData.Previous_Data.Lag_4.Close.date,
-          value: predictedPreviousPrices[3] * 0.87
+          value: predictedPreviousPrices[3] * 0.9
         }
       },
       Lag_5: {
         Close: {
           date: historicalData.Previous_Data.Lag_5.Close.date,
-          value: predictedPreviousPrices[4] * 0.87
+          value: predictedPreviousPrices[4] * 0.9
         }
       }
     };
