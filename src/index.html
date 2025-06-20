@@ -75,7 +75,20 @@
       </div>
     </div>
   </nav>
-  <main tabIndex="-1" id="main-content" class="main-content"></main>
+  <main tabIndex="-1" id="main-content" class="main-content">
+    <div 
+      class="container"
+      style="display: flex; justify-content: center; align-items: center; height: 80vh; font-size: 1.5rem; color: #333;"
+      id="loading"
+    >
+      <div class="spinner-border text-primary me-2" role="status" aria-hidden="true">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <span class="loading-text">
+        Memuat data BBRI...
+      </span>
+    </div>
+  </main>
 
   <!-- Footer -->
   <footer class="footer text-center">
@@ -86,6 +99,16 @@
 
   <!-- Bootstrap 5.3 JS Bundle -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const localStorageDate = localStorage.getItem('fetchDate');
+      const localStorageData = localStorage.getItem('fetchData');
+      const loadingElement = document.getElementById('loading');
+      if (localStorageDate || localStorageData) {
+        loadingElement.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -11,12 +11,6 @@ async function fetchBBRIOncePerDay() {
   const savedDate = localStorage.getItem('fetchDate');
   const savedData = localStorage.getItem('fetchData');
 
-  // loading alert
-  if (!savedDate || !savedData) {
-    // console.log('🔄 Fetching data BBRI dari Yahoo Finance...');
-    alert('🔄 Memuat data BBRI...');
-  }
-  
   if (savedDate === today && savedData) {
     console.log('✅ Data sudah ada di localStorage hari ini');
     // alert('✅ Data sudah ada di localStorage hari ini');
