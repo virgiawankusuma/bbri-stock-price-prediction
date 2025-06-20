@@ -12,7 +12,8 @@ async function fetchBBRIOncePerDay() {
   const savedData = localStorage.getItem('fetchData');
 
   if (savedDate === today && savedData) {
-    console.log('✅ Data sudah ada di localStorage hari ini');
+    // console.log('✅ Data sudah ada di localStorage hari ini');
+    alert('✅ Data sudah ada di localStorage hari ini');
     return JSON.parse(savedData);
   }
 
@@ -39,11 +40,13 @@ async function fetchBBRIOncePerDay() {
     localStorage.setItem('fetchDate', today);
     localStorage.setItem('fetchData', JSON.stringify(data));
 
-    console.log('✅ Data berhasil di-fetch dan disimpan di localStorage');
+    // console.log('✅ Data berhasil di-fetch dan disimpan di localStorage');
+    alert('✅ Data berhasil di-fetch dan disimpan di localStorage');
     // cek isi localStorage fetchData
     return data;
   } catch (error) {
-    console.error('❌ Gagal fetch data:', error);
+    // console.error('❌ Gagal fetch data:', error);
+    alert('❌ Gagal fetch data:', error);
     return null;
   }
 }
