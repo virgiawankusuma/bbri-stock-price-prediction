@@ -18,8 +18,8 @@ async function fetchBBRIOncePerDay() {
   }
   
   if (savedDate === today && savedData) {
-    // console.log('✅ Data sudah ada di localStorage hari ini');
-    alert('✅ Data sudah ada di localStorage hari ini');
+    console.log('✅ Data sudah ada di localStorage hari ini');
+    // alert('✅ Data sudah ada di localStorage hari ini');
     return JSON.parse(savedData);
   }
 
