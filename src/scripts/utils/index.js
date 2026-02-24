@@ -64,23 +64,40 @@ export function setupSkipToContent(element, mainContent) {
   element.addEventListener('click', () => mainContent.focus());
 }
 
-export async function getHolidayDates() {
-  const apiKey = 'AIzaSyC8_Qm9XZtVTM_2wtuLUzRf80AgzCkPdGA';
-  const calendarId = 'id.indonesian%23holiday%40group.v.calendar.google.com';
-  const timeMin = '2025-01-01T00:00:00Z';
-  const timeMax = '2025-12-31T23:59:59Z';
+export async function getHolidayDates(year = new Date().getFullYear()) {
+  const cacheKey = `holidays-${year}`;
+  const cached = localStorage.getItem(cacheKey);
 
-  const [vercelData, googleData] = await Promise.all([
-    fetch('https://api-harilibur.vercel.app/api').then(res => res.json()),
-    fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}&timeMin=${timeMin}&timeMax=${timeMax}`).then(res => res.json()),
-  ]);
+  if (cached) {
+    return JSON.parse(cached);
+  }
+  const apiKey = process.env.GOOGLE_API_KEY;
+  const calendarId = encodeURIComponent('id.indonesian#holiday@group.v.calendar.google.com');
 
-  const vercelDates = vercelData.map(item => item.holiday_date);
-  const googleDates = googleData.items
-    .filter(item => item.start?.date)
-    .map(item => item.start.date);
+  const timeMin = new Date(`${year}-01-01`).toISOString();
+  const timeMax = new Date(`${year}-12-31`).toISOString();
 
-  return [...new Set([...vercelDates, ...googleDates])];
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}&timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true&orderBy=startTime`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.warn('Google API error:', response.status);
+      return [];
+    }
+
+    const data = await response.json();
+
+    const holidays = data.items.filter((item) => item.start?.date).map((item) => item.start.date);
+
+    localStorage.setItem(cacheKey, JSON.stringify(holidays));
+
+    return holidays;
+  } catch (error) {
+    console.error('Failed to fetch holidays:', error);
+    return [];
+  }
 }
 
 export function getPreviousWorkingDate(holidays) {
@@ -123,7 +140,7 @@ export async function setupDatePicker() {
   });
 }
 
-// expected output: if from input 2025-06-05, should be just returning "10 Juni 2025", cause 2025-06-05 untill 2025-06-09 is long weekend and try to use flatpickr to know the next working date 
+// expected output: if from input 2025-06-05, should be just returning "10 Juni 2025", cause 2025-06-05 untill 2025-06-09 is long weekend and try to use flatpickr to know the next working date
 export async function getWorkingDateAfterInputDate(inputDate) {
   const holidays = await getHolidayDates();
   const holidaySet = new Set(holidays);
@@ -152,7 +169,9 @@ export async function getWorkingDateAfterInputDate(inputDate) {
 }
 
 export function resetPredict(predictResult = null) {
-  const inputFields = document.querySelectorAll('#predict-form input[type="number"], #predict-form input[type="text"]');
+  const inputFields = document.querySelectorAll(
+    '#predict-form input[type="number"], #predict-form input[type="text"]',
+  );
   inputFields.forEach((input) => {
     if (input.type === 'number') {
       input.value = '';
